@@ -1,18 +1,22 @@
 package com.lyj.gitdemo.fragment;
 
 import android.animation.ArgbEvaluator;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.lyj.gitdemo.R;
 import com.lyj.gitdemo.adapter.LeadAdapter;
+import com.lyj.gitdemo.view.LeadView3;
 
 import me.relex.circleindicator.CircleIndicator;
 
@@ -29,6 +33,7 @@ public class LeadFragment extends Fragment{
     int color1;
     int color2;
     int color3;
+    Context context;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,26 +49,33 @@ public class LeadFragment extends Fragment{
         adapter=new LeadAdapter(getActivity());
         vp.setAdapter(adapter);
         circleIndicator.setViewPager(vp);
+        context=getContext();
         vp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                ArgbEvaluator argbEvaluator=new ArgbEvaluator();
+                ArgbEvaluator argbEvaluator = new ArgbEvaluator();
                 if (position == 0) {
-                    int i= (int) argbEvaluator.evaluate(positionOffset,color1,color2);
+                    int i = (int) argbEvaluator.evaluate(positionOffset, color1, color2);
                     content.setBackgroundColor(i);
                     ivPhoneFont.setAlpha(positionOffset);
-                    float f=0.2f+positionOffset*0.8f;
+                    float f = 0.2f + positionOffset * 0.8f;
                     layoutPhone.setScaleX(f);
                     layoutPhone.setScaleY(f);
-//                    int j= (int) ((positionOffset-1)*300);
-//                    layoutPhone.setTranslationX(j);
-                    int o= (int) (0.2+positionOffset*0.3);
-                    layoutPhone.setPivotX(o);
+                    WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+                    Display display = wm.getDefaultDisplay();
+                    int screenWidth = display.getWidth();
+                    int scroll = (int) ((positionOffset - 1) * (screenWidth/2-75));
+                    layoutPhone.setTranslationX(scroll);
                 }
                 if (position == 1) {
-                    int i= (int) argbEvaluator.evaluate(positionOffset,color2,color3);
+                    int i = (int) argbEvaluator.evaluate(positionOffset, color2, color3);
                     content.setBackgroundColor(i);
                     layoutPhone.setTranslationX(-positionOffsetPixels);
+                }
+                if (position == 2) {
+                    LeadView3 leadView3= (LeadView3) adapter.getView(position);
+                    leadView3.showitem();
+
                 }
             }
 
@@ -79,4 +91,6 @@ public class LeadFragment extends Fragment{
         });
         return view;
     }
+
+
 }

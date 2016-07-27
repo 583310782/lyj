@@ -33,6 +33,9 @@ public class LeadAdapter extends PagerAdapter{
     public boolean isViewFromObject(View view, Object object) {
         return view==object;
     }
+    public View getView(int position) {
+        return list.get(position);
+    }
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         View view = list.get(position);
