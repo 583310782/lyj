@@ -23,6 +23,7 @@ public class HotspotwareFragment extends Fragment{
     HotspotwareAdapter adapter;
     List<Fragment> list;
     List<String> list1;
+    List<String> list2;
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
@@ -34,6 +35,7 @@ public class HotspotwareFragment extends Fragment{
         viewPager= (ViewPager) view.findViewById(R.id.viewPager);
         list=new ArrayList<Fragment>();
         list1=new ArrayList<String>();
+        list2=new ArrayList<String>();
         list1.add("Java");
         list1.add("JavaScript");
         list1.add("Go");
@@ -43,9 +45,19 @@ public class HotspotwareFragment extends Fragment{
         list1.add("Python");
         list1.add("Swift");
         list1.add("Ruby");
+        list2.add("JAVA");
+        list2.add("JAVASCRIPT");
+        list2.add("GO");
+        list2.add("HTML");
+        list2.add("CSS");
+        list2.add("OBJECTIVE-C");
+        list2.add("PYTHON");
+        list2.add("SWIFT");
+        list2.add("RUBY");
         for(int i=0;i<list1.size();i++){
             HotspotFragment hotspotFragment=new HotspotFragment();
             list.add(hotspotFragment);
+            hotspotFragment.setStr(list2.get(i));
         }
         adapter=new HotspotwareAdapter(getChildFragmentManager(),list,list1);
         viewPager.setAdapter(adapter);
